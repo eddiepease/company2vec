@@ -1,6 +1,6 @@
-from .helpers import URLScraper
-from .helpers import URLFinder
-from .helpers import Embeddings
+from .pipelines import URLScraper
+from .urls import URLFinder
+from .embeddings import Embeddings
 
 
 class Company2Vec:
@@ -23,7 +23,9 @@ class Company2Vec:
 
         print('Starting scrape...')
         scraper = URLScraper(overwrite=self.overwrite)
-        scraper.scrape_website(company_name=self.company_name, url=self.company_url)
+        deferred = scraper.scrape_website(company_name=self.company_name, url=self.company_url)
+
+        return deferred
 
     def create_embeddings(self):
 
@@ -46,7 +48,7 @@ class Company2Vec:
         """
 
         print('Starting scrape...')
-        self.scrape()
+        deferred = self.scrape()
         print('Starting embeddings creation...')
         company_embedding = self.create_embeddings()
 
