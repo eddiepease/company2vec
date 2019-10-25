@@ -1,11 +1,13 @@
-from flask import Flask
+from klein import Klein
 from app.model import Company2Vec
+# from app.pipelines import URLScraper
 
 
-app = Flask(__name__)
+app = Klein()
+
 
 @app.route("/")
-def home():
+def home(request):
 
     """
     A welcome function used for testing
@@ -16,7 +18,7 @@ def home():
 
 
 @app.route("/company/<company_name>", methods=['GET'])
-def create_embedding(company_name):
+def create_embedding(request, company_name):
 
     """
     Creates embedding after scrape
@@ -31,4 +33,4 @@ def create_embedding(company_name):
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000)
+    app.run('localhost', port=5000)
