@@ -2,4 +2,4 @@ scrapy
 pyenchant
 numpy
 requests
-Flask
+Klein

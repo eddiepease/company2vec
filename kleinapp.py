@@ -1,11 +1,13 @@
-from flask import Flask
-from app.model import Company2Vec
+from klein import Klein
+from app.pipelines import Pipeline
+from app.urls import URLFinder
 
 
-app = Flask(__name__)
+app = Klein()
+
 
 @app.route("/")
-def home():
+def home(request):
 
     """
     A welcome function used for testing
@@ -16,7 +18,7 @@ def home():
 
 
 @app.route("/company/<company_name>", methods=['GET'])
-def create_embedding(company_name):
+def create_embedding(request, company_name):
 
     """
     Creates embedding after scrape
@@ -24,11 +26,11 @@ def create_embedding(company_name):
     :return:
     """
 
-    c2v = Company2Vec(company_name)
-    result = c2v.run()
+    url = URLFinder().run(company=company_name)
+    result = Pipeline(overwrite=False).run(url=url)
 
-    return result.jsonify()
+    return result
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000)
+    app.run('localhost', port=5000)
