@@ -1,3 +1,4 @@
+import os
 import json
 from scrapy import signals
 from scrapy.crawler import CrawlerRunner
@@ -33,6 +34,7 @@ class MyCrawlerRunner(CrawlerRunner):
 
     def return_items(self, result):
         return self.items
+
 
 def return_spider_output(output):
     """
@@ -79,15 +81,14 @@ class Pipeline:
         :return: None
         """
 
-        scrape_file_location = 'app/scrape_output/pharmaforesight.json'
+        # remove historic file
+        scrape_file_location = 'app/scrape_output/result.json'
+        if os.path.exists(scrape_file_location):
+            os.remove(scrape_file_location)
 
         # conduct scrape
-        print(1)
         runner = MyCrawlerRunner(settings=WebsiteSettings().generate_settings_dict(file_location=scrape_file_location))
-        print(2)
         deferred = runner.crawl(self.scraper.create(url))
-        print(3)
         deferred.addCallback(return_spider_output)
-        print(4)
         deferred.addCallback(return_company_embedding)
         return deferred

@@ -7,7 +7,8 @@ class WebsiteSettings(Settings):
     Defining the settings for the scraper
     """
 
-    def generate_settings_dict(self, file_location):
+    @staticmethod
+    def generate_settings_dict(file_location):
 
         """
         Generating the settings dictionary
