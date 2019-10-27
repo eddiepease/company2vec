@@ -42,9 +42,7 @@ def return_spider_output(output):
     :return: json with list of items
     """
 
-    print('Deferred 1')
     # this just turns items into dictionaries
-    # you may want to use Scrapy JSON serializer here
     return [dict(item) for item in output]
 
 
@@ -55,7 +53,6 @@ def return_company_embedding(company_data):
     :return:
     """
 
-    print('Deferred 2')
     embed = Embeddings()
     company_embedding = embed.create_single_embedding(company_data)
     company_dict = json.dumps({'company_embedding': company_embedding})
