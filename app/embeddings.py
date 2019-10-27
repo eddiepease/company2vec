@@ -30,7 +30,7 @@ class Embeddings:
                 embeddings[row[0]] = row[1:]
         return embeddings
 
-    def create_single_embedding(self, company_name):
+    def create_single_embedding(self, company_data):
 
         """
         Create single embedding for company
@@ -38,11 +38,11 @@ class Embeddings:
         :return: company_embedding: embedding for single company, numpy array
         """
 
-        # reading company text
-        scrape_file_location = 'app/scrape_output/' + company_name + '.json'
-        with open(scrape_file_location) as json_file:
-            data = json.load(json_file)
-        company_text = ' '.join([ent['company_text'] for ent in data])
+        # # reading company text
+        # scrape_file_location = 'app/scrape_output/' + company_name + '.json'
+        # with open(scrape_file_location) as json_file:
+        #     data = json.load(json_file)
+        company_text = ' '.join([ent['company_text'] for ent in company_data])
 
         # generate embedding
         num_words = 0
@@ -55,9 +55,10 @@ class Embeddings:
                 continue
 
         # normalize array
-        company_embedding = company_embedding * (1/num_words)
+        company_embedding_arr = company_embedding * (1/num_words)
+        company_embedding_lst = company_embedding_arr.tolist()[0]
 
-        # remove scraped file
-        os.remove(scrape_file_location)
+        # # remove scraped file
+        # os.remove(scrape_file_location)
 
-        return company_embedding
+        return company_embedding_lst

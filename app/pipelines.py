@@ -1,10 +1,10 @@
-import os
 import json
 from scrapy import signals
 from scrapy.crawler import CrawlerRunner
 
 from .spiders.website_spider import GenericSpider
 from .settings import WebsiteSettings
+from .embeddings import Embeddings
 
 
 class MyCrawlerRunner(CrawlerRunner):
@@ -34,18 +34,34 @@ class MyCrawlerRunner(CrawlerRunner):
     def return_items(self, result):
         return self.items
 
-
 def return_spider_output(output):
     """
     :param output: items scraped by CrawlerRunner
     :return: json with list of items
     """
+
+    print('Deferred 1')
     # this just turns items into dictionaries
     # you may want to use Scrapy JSON serializer here
-    return json.dumps([dict(item) for item in output])
+    return [dict(item) for item in output]
 
 
-class URLScraper:
+def return_company_embedding(company_data):
+    """
+    function
+    :param company_data: scraped data for the company, list of dictionaries
+    :return:
+    """
+
+    print('Deferred 2')
+    embed = Embeddings()
+    company_embedding = embed.create_single_embedding(company_data)
+    company_dict = json.dumps({'company_embedding': company_embedding})
+
+    return company_dict
+
+
+class Pipeline:
 
     """
     Brings together all the scrapy components
@@ -55,28 +71,23 @@ class URLScraper:
         self.scraper = GenericSpider()
         self.overwrite = overwrite
 
-    def scrape_website(self, company_name, url):
+    def run(self, url):
 
         """
         Carry out scrape of website
         :param url: URL string
-        :param company_name: company name string
         :return: None
         """
 
-        # remove temporary output file, if exists
-        scrape_file_location = 'app/scrape_output/' + company_name + '.json'
-        if os.path.exists(scrape_file_location):
-            if self.overwrite:
-                os.remove(scrape_file_location)
-            else:
-                return None
+        scrape_file_location = 'app/scrape_output/pharmaforesight.json'
 
         # conduct scrape
+        print(1)
         runner = MyCrawlerRunner(settings=WebsiteSettings().generate_settings_dict(file_location=scrape_file_location))
+        print(2)
         deferred = runner.crawl(self.scraper.create(url))
+        print(3)
         deferred.addCallback(return_spider_output)
+        print(4)
+        deferred.addCallback(return_company_embedding)
         return deferred
-
-
-

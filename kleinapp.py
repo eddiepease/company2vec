@@ -1,6 +1,6 @@
 from klein import Klein
-from app.model import Company2Vec
-# from app.pipelines import URLScraper
+from app.pipelines import Pipeline
+from app.urls import URLFinder
 
 
 app = Klein()
@@ -26,10 +26,10 @@ def create_embedding(request, company_name):
     :return:
     """
 
-    c2v = Company2Vec(company_name)
-    result = c2v.run()
+    url = URLFinder().run(company=company_name)
+    result = Pipeline(overwrite=False).run(url=url)
 
-    return result.jsonify()
+    return result
 
 
 if __name__ == '__main__':
