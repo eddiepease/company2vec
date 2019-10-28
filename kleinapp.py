@@ -33,4 +33,4 @@ def create_embedding(request, company_name):
 
 
 if __name__ == '__main__':
-    app.run('localhost', port=5000)
+    app.run('0.0.0.0', port=5000)

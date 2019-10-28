@@ -2,3 +2,4 @@ scrapy
 numpy
 requests
 Klein
+pylint
