@@ -1,5 +1,5 @@
 import re
-import enchant
+import json
 from urllib.parse import urlparse
 from scrapy.spiders import CrawlSpider
 from scrapy.spiders import Rule
@@ -23,7 +23,8 @@ class GenericSpider(CrawlSpider):
         Rule(LinkExtractor(), callback='parse_item', follow=True),
     )
 
-    lang_dictionary = enchant.Dict("en_GB")
+    with open('app/data/words_dictionary.json') as json_file:
+        lang_dictionary = json.load(json_file)
 
     @classmethod
     def create(cls, link):
@@ -65,7 +66,7 @@ class GenericSpider(CrawlSpider):
         web_text = re.sub(r'[^\w\s]','',web_text).lower()
 
         # filter for english
-        english_web_text = ' '.join([w for w in web_text.split() if self.lang_dictionary.check(w)])
+        english_web_text = ' '.join([w for w in web_text.split() if w in self.lang_dictionary])
 
         item['company_text'] = english_web_text
 

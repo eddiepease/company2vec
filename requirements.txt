@@ -1,5 +1,5 @@
 scrapy
-pyenchant
 numpy
 requests
 Klein
+pylint
