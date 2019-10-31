@@ -6,8 +6,8 @@ pipeline {
         CONTAINER_TAG = 'latest'
         AWS_ACCOUNT_ID = '341879875473'
         AWS_REGION = 'us-west-2'
-        AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
-        AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+        //AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+        //AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
     }
 
     stages {
@@ -22,6 +22,7 @@ pipeline {
             steps {
                 //sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
                 echo "Image build complete"
+                echo "AWS Region is ${AWS_REGION}"
             }
         }
 //         stage('Test docker image') {
