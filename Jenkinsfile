@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout
+                checkout scm
             }
         }
         stage('Pre-Build Checks') {
