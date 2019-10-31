@@ -11,6 +11,11 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout
+            }
+        }
         stage('Pre-Build Checks') {
             steps {
                 sh 'make lint'
