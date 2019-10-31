@@ -1,30 +1,26 @@
 pipeline {
     agent any
 
-    environment {
-        CONTAINER_NAME = 'company2vec'
-        CONTAINER_TAG = 'latest'
-        AWS_ACCOUNT_ID = '341879875473'
-        AWS_REGION = 'us-west-2'
-        AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
-        AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
-    }
+//     environment {
+//         CONTAINER_NAME = 'company2vec'
+//         CONTAINER_TAG = 'latest'
+//         AWS_ACCOUNT_ID = '341879875473'
+//         AWS_REGION = 'us-west-2'
+//         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+//         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+//     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
         stage('Pre-Build Checks') {
             steps {
-                sh 'make lint'
-                sh 'python -m unittest discover tests/'
+                //sh 'make lint'
+                //sh 'python -m unittest discover tests/'
+                echo 'First test'
             }
         }
         stage('Build docker image') {
             steps {
-                sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
+                //sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
                 echo "Image build complete"
             }
         }
@@ -38,11 +34,11 @@ pipeline {
 //         }
         stage('Deploy to AWS ECR') {
             steps {
-                script {
-                    docker.withRegistry("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com", "ecr:${AWS_REGION}:${AWS_ACCESS_KEY_ID}") {
-                      docker.image("${CONTAINER_NAME}:${CONTAINER_TAG}").push()
-                    }
-                }
+//                 script {
+//                     docker.withRegistry("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com", "ecr:${AWS_REGION}:${AWS_ACCESS_KEY_ID}") {
+//                       docker.image("${CONTAINER_NAME}:${CONTAINER_TAG}").push()
+//                     }
+//                 }
 //                 sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
 //                 sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
                 echo "Image push complete"
