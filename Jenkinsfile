@@ -13,16 +13,15 @@ pipeline {
     stages {
         stage('Pre-Build Checks') {
             steps {
-                //sh 'make lint'
-                //sh 'python -m unittest discover tests/'
-                echo 'First test'
+                sh 'make lint'
+                sh 'python -m unittest discover tests/'
+                echo "All checks passed"
             }
         }
         stage('Build docker image') {
             steps {
-                //sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
+                sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
                 echo "Image build complete"
-                echo "AWS Region is ${AWS_REGION}"
             }
         }
 //         stage('Test docker image') {
@@ -35,13 +34,13 @@ pipeline {
 //         }
         stage('Deploy to AWS ECR') {
             steps {
-//                 script {
-//                     docker.withRegistry("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com", "ecr:${AWS_REGION}:${AWS_ACCESS_KEY_ID}") {
-//                       docker.image("${CONTAINER_NAME}:${CONTAINER_TAG}").push()
-//                     }
-//                 }
-//                 sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-//                 sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
+                script {
+                    docker.withRegistry("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com", "ecr:${AWS_REGION}:${AWS_ACCESS_KEY_ID}") {
+                      docker.image("${CONTAINER_NAME}:${CONTAINER_TAG}").push()
+                    }
+                }
+                sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
+                sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
                 echo "Image push complete"
             }
         }
