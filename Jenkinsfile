@@ -1,14 +1,14 @@
 pipeline {
     agent any
 
-//     environment {
-//         CONTAINER_NAME = 'company2vec'
-//         CONTAINER_TAG = 'latest'
-//         AWS_ACCOUNT_ID = '341879875473'
-//         AWS_REGION = 'us-west-2'
-//         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
-//         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
-//     }
+    environment {
+        CONTAINER_NAME = 'company2vec'
+        CONTAINER_TAG = 'latest'
+        AWS_ACCOUNT_ID = '341879875473'
+        AWS_REGION = 'us-west-2'
+        AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+    }
 
     stages {
         stage('Pre-Build Checks') {
