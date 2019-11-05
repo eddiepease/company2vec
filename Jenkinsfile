@@ -14,18 +14,10 @@ pipeline {
         stage('Pre-Build Checks') {
             steps {
                 // activating virtualenv
-//                 sh 'source venv/bin/activate'
-//                 // running tests
-//                 sh 'pylint kleinapp.py'
-// 	            sh 'pylint app'
-// 	            sh 'python -m unittest discover tests/'
-//                 sh 'make lint'
-//                 sh 'make test'
-                withPythonEnv('.venv') {
-                    //sh 'make install'
-                    sh 'make lint'
-                    sh 'make test'
-                }
+                sh 'make setup'
+                // running tests
+                sh 'make lint'
+                sh 'make test'
                 echo "All checks passed"
             }
         }

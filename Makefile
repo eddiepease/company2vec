@@ -5,10 +5,10 @@
 # app.py should pass pylint
 # (Optional) Build a simple integration test
 
-# setup:
-# 	# Create python virtualenv & source it
-# 	# source ~/.devops/bin/activate
-# 	python3 -m venv ~/.devops
+setup:
+	# Create python virtualenv & source it
+	# python3 -m venv ~/.venv
+	source ~/.venv/bin/activate
 
 install:
 	# This should be run from inside a virtualenv
