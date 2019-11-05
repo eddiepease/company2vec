@@ -19,13 +19,13 @@ pipeline {
 //                 sh 'pylint kleinapp.py'
 // 	            sh 'pylint app'
 // 	            sh 'python -m unittest discover tests/'
-                sh 'make lint'
-                sh 'make test'
-//                 withPythonEnv('venv') {
-//                     sh 'make install'
-//                     sh 'make lint'
-//                     sh 'make test'
-//                 }
+//                 sh 'make lint'
+//                 sh 'make test'
+                withPythonEnv('.venv') {
+                    //sh 'make install'
+                    sh 'make lint'
+                    sh 'make test'
+                }
                 echo "All checks passed"
             }
         }
