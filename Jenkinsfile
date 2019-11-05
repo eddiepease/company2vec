@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Pre-Build Checks') {
             steps {
-                withPythonEnv('venv_jenkins') {
+                withPythonEnv('venv') {
                     sh 'make install'
                     sh 'make lint'
                     sh 'make test'
