@@ -13,8 +13,11 @@ pipeline {
     stages {
         stage('Pre-Build Checks') {
             steps {
-                sh 'make lint'
-                sh 'python -m unittest discover tests/'
+                withPythonEnv('venv_jenkins') {
+                    sh 'make install'
+                    sh 'make lint'
+                    sh 'make test'
+                }
                 echo "All checks passed"
             }
         }

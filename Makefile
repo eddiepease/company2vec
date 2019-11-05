@@ -5,27 +5,30 @@
 # app.py should pass pylint
 # (Optional) Build a simple integration test
 
-setup:
-	# Create python virtualenv & source it
-	# source ~/.devops/bin/activate
-	python3 -m venv ~/.devops
+# setup:
+# 	# Create python virtualenv & source it
+# 	# source ~/.devops/bin/activate
+# 	python3 -m venv ~/.devops
 
 install:
 	# This should be run from inside a virtualenv
-	pip install --upgrade pip &&\
-		pip install -r requirements.txt
+	# This builds the environment for the jenkins build
+	pip install --upgrade pip
+	pip install pylint
 
 test:
 	# Additional, optional, tests could go here
+	python -m unittest discover tests/
 	#python -m pytest -vv --cov=myrepolib tests/*.py
 	#python -m pytest --nbval notebook.ipynb
 
 lint:
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
 	# This is linter for Dockerfiles
-	hadolint Dockerfile
+	# hadolint Dockerfile
 	# This is a linter for Python source code linter: https://www.pylint.org/
 	# This should be run from inside a virtualenv
 	pylint kleinapp.py
+	pylint app
 
 all: install lint test
