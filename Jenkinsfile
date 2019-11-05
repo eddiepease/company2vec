@@ -13,11 +13,13 @@ pipeline {
     stages {
         stage('Pre-Build Checks') {
             steps {
-                withPythonEnv('venv') {
-                    sh 'make install'
-                    sh 'make lint'
-                    sh 'make test'
-                }
+                sh 'make lint'
+                sh 'make test'
+//                 withPythonEnv('venv') {
+//                     sh 'make install'
+//                     sh 'make lint'
+//                     sh 'make test'
+//                 }
                 echo "All checks passed"
             }
         }
