@@ -14,7 +14,7 @@ pipeline {
         stage('Pre-Build Checks') {
             steps {
                 // activating virtualenv
-                sh 'make setup'
+                sh 'source ~/.venv/bin/activate'
                 // running tests
                 sh 'make lint'
                 sh 'make test'
