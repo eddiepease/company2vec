@@ -1,8 +1,8 @@
 pipeline {
     agent {
         docker {
-            image 'clburlison/pylint:py3-alpine'
-            //args '-v /var/run/docker.sock:/var/run/docker.sock'
+            image 'eddiepease/alpine-python3-pytest'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
 
