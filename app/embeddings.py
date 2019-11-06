@@ -1,8 +1,8 @@
-import os
+"""This module generates company embeddings given company data and pre-trained word embeddings"""
+
 import csv
-import json
-import numpy as np
 from collections import defaultdict
+import numpy as np
 
 
 class Embeddings:
@@ -47,9 +47,9 @@ class Embeddings:
         # generate embedding
         num_words = 0
         company_embedding = np.zeros(shape=(1, self.embedding_size), dtype=np.float32)
-        for w in company_text.split():
+        for word in company_text.split():
             try:
-                company_embedding += np.array(self.embeddings[w], dtype=np.float32)
+                company_embedding += np.array(self.embeddings[word], dtype=np.float32)
                 num_words += 1
             except ValueError:
                 continue

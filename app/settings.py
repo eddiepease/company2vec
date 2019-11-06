@@ -1,3 +1,5 @@
+"""This module defines the scrapy settings"""
+
 from scrapy.settings import Settings
 
 

@@ -1,11 +1,13 @@
+"""This module defines all the objects necessary to control the app"""
+
 import os
 import json
 from scrapy import signals
 from scrapy.crawler import CrawlerRunner
 
-from .spiders.website_spider import GenericSpider
-from .settings import WebsiteSettings
-from .embeddings import Embeddings
+from app.spiders.website_spider import GenericSpider
+from app.settings import WebsiteSettings
+from app.embeddings import Embeddings
 
 
 class MyCrawlerRunner(CrawlerRunner):
@@ -13,6 +15,13 @@ class MyCrawlerRunner(CrawlerRunner):
     Crawler object that collects items and returns output after finishing crawl.
     """
     def crawl(self, crawler_or_spidercls, *args, **kwargs):
+
+        """
+        Launch a crawl and return output as deferred
+        :param crawler_or_spidercls: scrapy crawler
+        :return: dfd: deferred object with crawled output
+        """
+
         # keep all items scraped
         self.items = []
 
@@ -30,9 +39,22 @@ class MyCrawlerRunner(CrawlerRunner):
         return dfd
 
     def item_scraped(self, item, response, spider):
+
+        """
+        Append each individual item scraped
+        :param item: scrapy item
+        :return: None
+        """
+
         self.items.append(item)
 
     def return_items(self, result):
+
+        """
+        Return scrapy items
+        :return: items: scrapy items
+        """
+
         return self.items
 
 
@@ -84,7 +106,8 @@ class Pipeline:
             os.remove(scrape_file_location)
 
         # conduct scrape
-        runner = MyCrawlerRunner(settings=WebsiteSettings().generate_settings_dict(file_location=scrape_file_location))
+        runner = MyCrawlerRunner(settings=WebsiteSettings().
+                                 generate_settings_dict(file_location=scrape_file_location))
         deferred = runner.crawl(self.scraper.create(url))
         deferred.addCallback(return_spider_output)
         deferred.addCallback(return_company_embedding)

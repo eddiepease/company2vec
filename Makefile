@@ -29,6 +29,6 @@ lint:
 	# This is a linter for Python source code linter: https://www.pylint.org/
 	# This should be run from inside a virtualenv
 	pylint kleinapp.py --disable=E0401,C0103,W0613
-	pylint app
+	pylint app --disable=E0401,W0613,W0201,R0903
 
 all: install lint test
