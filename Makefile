@@ -28,7 +28,7 @@ lint:
 	# hadolint Dockerfile
 	# This is a linter for Python source code linter: https://www.pylint.org/
 	# This should be run from inside a virtualenv
-	pylint kleinapp.py
+	pylint kleinapp.py --disable=E0401,C0103,W0613
 	pylint app
 
 all: install lint test
