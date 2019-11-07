@@ -1,5 +1,5 @@
 def runCommandInMyEnvironment(cmd) {
-  sh "python3 -m venv venv; source venv/bin/activate; ${cmd}"
+  sh "python3 -m venv ~/.venv; source ~/.venv/bin/activate; ${cmd}"
 }
 
 pipeline {
