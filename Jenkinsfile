@@ -1,10 +1,9 @@
+def runCommandInMyEnvironment(cmd) {
+  sh "make setup; ${cmd}"
+}
+
 pipeline {
-    agent {
-        docker {
-            image 'eddiepease/alpine-python3-pytest'
-            args '-v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
 
     environment {
         CONTAINER_NAME = 'company2vec'
@@ -19,7 +18,7 @@ pipeline {
         stage('Pre-Build Checks') {
             steps {
                 // running tests
-                sh 'make lint'
+                runCommandInMyEnvironment('make lint')
                 echo "All checks passed"
             }
         }
@@ -37,17 +36,17 @@ pipeline {
 //                 sh "docker stop $containerName"
 //             }
 //         }
-        stage('Deploy to AWS ECR') {
-            steps {
-                script {
-                    docker.withRegistry("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com", "ecr:${AWS_REGION}:${AWS_ACCESS_KEY_ID}") {
-                      docker.image("${CONTAINER_NAME}:${CONTAINER_TAG}").push()
-                    }
-                }
-//                 sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-//                 sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-                echo "Image push complete"
-            }
-        }
+//         stage('Deploy to AWS ECR') {
+//             steps {
+//                 script {
+//                     docker.withRegistry("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com", "ecr:${AWS_REGION}:${AWS_ACCESS_KEY_ID}") {
+//                       docker.image("${CONTAINER_NAME}:${CONTAINER_TAG}").push()
+//                     }
+//                 }    
+// //                 sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
+// //                 sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
+//                 echo "Image push complete"
+//             }
+//         }
     }
 }
