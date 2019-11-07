@@ -1,5 +1,3 @@
-scrapy
-numpy
-requests
-Klein
-pylint
+version https://git-lfs.github.com/spec/v1
+oid sha256:29d0a017d14860b890f5f396c159093b3c67e323ea65d51a5417bd353583a3bd
+size 34

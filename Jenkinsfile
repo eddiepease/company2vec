@@ -20,16 +20,15 @@ pipeline {
             steps {
                 // running tests
                 sh 'make lint'
-                sh 'make test'
                 echo "All checks passed"
             }
         }
-//         stage('Build docker image') {
-//             steps {
-//                 sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
-//                 echo "Image build complete"
-//             }
-//         }
+        stage('Build docker image') {
+            steps {
+                sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
+                echo "Image build complete"
+            }
+        }
 //         stage('Test docker image') {
 //             steps {
 //                 sh "docker run -d --rm -p $httpPort:$httpPort $containerName:$tag"
@@ -38,17 +37,17 @@ pipeline {
 //                 sh "docker stop $containerName"
 //             }
 //         }
-//         stage('Deploy to AWS ECR') {
-//             steps {
-//                 script {
-//                     docker.withRegistry("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com", "ecr:${AWS_REGION}:${AWS_ACCESS_KEY_ID}") {
-//                       docker.image("${CONTAINER_NAME}:${CONTAINER_TAG}").push()
-//                     }
-//                 }
+        stage('Deploy to AWS ECR') {
+            steps {
+                script {
+                    docker.withRegistry("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com", "ecr:${AWS_REGION}:${AWS_ACCESS_KEY_ID}") {
+                      docker.image("${CONTAINER_NAME}:${CONTAINER_TAG}").push()
+                    }
+                }
 //                 sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
 //                 sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-//                 echo "Image push complete"
-//             }
-//         }
+                echo "Image push complete"
+            }
+        }
     }
 }
