@@ -14,7 +14,8 @@ pipeline {
         stage('Pre-Build Checks') {
             steps {
                 // running tests
-                sh 'make lint'
+                sh 'pylint kleinapp.py --disable=E0401,C0103,W0613'
+	            sh 'pylint app --disable=E0401,W0613,W0201,R0903'
                 echo "All checks passed"
             }
         }
