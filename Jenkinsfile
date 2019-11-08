@@ -6,6 +6,7 @@ pipeline {
         CONTAINER_TAG = 'latest'
         AWS_ACCOUNT_ID = '341879875473'
         AWS_REGION = 'us-west-2'
+        AWS_CREDS_ID = 'dc7d59a2-89eb-4fbb-9205-116b02d6cc8f'
         //AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         //AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
     }
@@ -33,17 +34,15 @@ pipeline {
 //                 sh "docker stop $containerName"
 //             }
 //         }
-//         stage('Deploy to AWS ECR') {
-//             steps {
-//                 script {
-//                     docker.withRegistry("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com", "ecr:${AWS_REGION}:${AWS_ACCESS_KEY_ID}") {
-//                       docker.image("${CONTAINER_NAME}:${CONTAINER_TAG}").push()
-//                     }
-//                 }
-// //                 sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-// //                 sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-//                 echo "Image push complete"
-//             }
-//         }
+        stage('Deploy to AWS ECR') {
+            steps {
+                script {
+                    docker.withRegistry("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com", "ecr:${AWS_REGION}:${AWS_CREDS_ID}") {
+                      docker.image("${CONTAINER_NAME}:${CONTAINER_TAG}").push()
+                    }
+                }
+                echo "Image push complete"
+            }
+        }
     }
 }
