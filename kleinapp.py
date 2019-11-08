@@ -1,3 +1,5 @@
+""" This module is a Klein web app for returning company embeddings"""
+
 from klein import Klein
 from app.pipelines import Pipeline
 from app.urls import URLFinder
@@ -21,9 +23,9 @@ def home(request):
 def create_embedding(request, company_name):
 
     """
-    Creates embedding after scrape
+    Finds the URL, scrapes the website, returns the embedding
     :param company_name: string of company name
-    :return:
+    :return: result: json dictionary of company embedding
     """
 
     url = URLFinder().run(company=company_name)

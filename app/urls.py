@@ -1,3 +1,5 @@
+"""This module returns a company URL, given a company name"""
+
 import requests
 
 

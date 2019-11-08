@@ -1,3 +1,5 @@
+"""This module defines the scrapy item"""
+
 from scrapy import Item, Field
 
 

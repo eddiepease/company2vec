@@ -1,10 +1,12 @@
+""" This module defines a generic scrapy spider that can be used for any website"""
+
 import re
 import json
 from urllib.parse import urlparse
 from scrapy.spiders import CrawlSpider
 from scrapy.spiders import Rule
 from scrapy.linkextractors import LinkExtractor
-from ..items import WebsiteItem
+from app.items import WebsiteItem
 
 
 class GenericSpider(CrawlSpider):
@@ -36,8 +38,9 @@ class GenericSpider(CrawlSpider):
         """
 
         domain = urlparse(link).netloc.lower()
-        # generate a class name such that domain www.google.com results in class name GoogleComGenericSpider
-        class_name = (domain if not domain.startswith('www.') else domain[4:]).title().replace('.', '') + cls.__name__
+        # generate a class name (e.g. www.google.com = GoogleComGenericSpider)
+        class_name = (domain if not domain.startswith('www.')
+                      else domain[4:]).title().replace('.', '') + cls.__name__
         return type(class_name, (cls,), {
             'allowed_domains': [domain],
             'start_urls': [link],
@@ -50,7 +53,7 @@ class GenericSpider(CrawlSpider):
         """
         Ordering the response from each URL
         :param response: response from URL
-        :return: list of dictionaries, with each element of list with 'company_url' and 'company_name' keys
+        :return: list of dictionaries- each element of list with 'company_url' & 'company_name' keys
         """
 
         # extract text
@@ -60,10 +63,10 @@ class GenericSpider(CrawlSpider):
             "//*[not(self::script or self::style or self::footer)]/text()").extract())
 
         # clean text
-        web_text = web_text.replace('\n',' ')
-        web_text = web_text.replace('\t',' ')
+        web_text = web_text.replace('\n', ' ')
+        web_text = web_text.replace('\t', ' ')
         web_text = " ".join(web_text.split())
-        web_text = re.sub(r'[^\w\s]','',web_text).lower()
+        web_text = re.sub(r'[^\w\s]', '', web_text).lower()
 
         # filter for english
         english_web_text = ' '.join([w for w in web_text.split() if w in self.lang_dictionary])
