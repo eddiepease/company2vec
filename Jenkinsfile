@@ -1,7 +1,3 @@
-def runCommandInMyEnvironment(cmd) {
-  sh "python3 -m venv ~/.venv; source ~/.venv/bin/activate; ${cmd}"
-}
-
 pipeline {
     agent any
 
@@ -10,15 +6,14 @@ pipeline {
         CONTAINER_TAG = 'latest'
         AWS_ACCOUNT_ID = '341879875473'
         AWS_REGION = 'us-west-2'
-        //AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
-        //AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
     }
 
     stages {
         stage('Pre-Build Checks') {
             steps {
                 // running tests
-                runCommandInMyEnvironment('make lint')
+                sh 'pylint kleinapp.py --disable=E0401,C0103,W0613'
+	            sh 'pylint app --disable=E0401,W0613,W0201,R0903'
                 echo "All checks passed"
             }
         }
@@ -36,17 +31,15 @@ pipeline {
 //                 sh "docker stop $containerName"
 //             }
 //         }
-//         stage('Deploy to AWS ECR') {
-//             steps {
-//                 script {
-//                     docker.withRegistry("${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com", "ecr:${AWS_REGION}:${AWS_ACCESS_KEY_ID}") {
-//                       docker.image("${CONTAINER_NAME}:${CONTAINER_TAG}").push()
-//                     }
-//                 }
-// //                 sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-// //                 sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-//                 echo "Image push complete"
-//             }
-//         }
+        stage('Deploy to AWS ECR') {
+            steps {
+                withAWS(credentials:'dc7d59a2-89eb-4fbb-9205-116b02d6cc8f') {
+                    sh '$(aws ecr get-login --no-include-email --region ${AWS_REGION})'
+                    sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
+                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
+                }
+                echo "Image push complete"
+            }
+        }
     }
 }
