@@ -13,11 +13,6 @@ pipeline {
     stages {
         stage('Pre-Build Checks') {
             steps {
-                // setup environment
-                sh 'virtualenv .venv --distribute'
-                sh '. .venv/bin/activate'
-                sh 'pip install --upgrade pip'
-                sh 'pip install pylint'
                 // running tests
                 sh 'make lint'
                 echo "All checks passed"
