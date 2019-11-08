@@ -14,7 +14,10 @@ pipeline {
         stage('Pre-Build Checks') {
             steps {
                 // setup environment
-                sh 'make setup'
+                sh 'python3 -m venv .venv'
+                sh '. .venv/bin/activate'
+                sh 'pip install --upgrade pip'
+                sh 'pip install pylint'
                 // running tests
                 sh 'make lint'
                 echo "All checks passed"
