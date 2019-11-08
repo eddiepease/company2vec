@@ -14,7 +14,7 @@ pipeline {
         stage('Pre-Build Checks') {
             steps {
                 // setup environment
-                sh 'python3 -m venv .venv'
+                sh 'virtualenv .venv --distribute'
                 sh '. .venv/bin/activate'
                 sh 'pip install --upgrade pip'
                 sh 'pip install pylint'
