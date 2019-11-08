@@ -1,7 +1,3 @@
-def runCommandInMyEnvironment(cmd) {
-  bash "make setup; ${cmd}"
-}
-
 pipeline {
     agent any
 
@@ -17,8 +13,10 @@ pipeline {
     stages {
         stage('Pre-Build Checks') {
             steps {
+                // setup environment
+                sh 'make setup'
                 // running tests
-                runCommandInMyEnvironment('make lint')
+                sh 'make lint'
                 echo "All checks passed"
             }
         }

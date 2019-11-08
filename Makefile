@@ -7,9 +7,9 @@
 
 setup:
 	# Create python virtualenv & source it
-	python3 -m venv venv
-	source venv/bin/activate
-	pip install --upgrade pip
+	python3 -m venv .venv
+    . .venv/bin/activate
+    pip install --upgrade pip
 	pip install pylint
 
 test:
