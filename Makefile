@@ -8,13 +8,13 @@
 setup:
 	# Create python virtualenv & source it
 	python3 -m venv venv
-	source venv/bin/activate
+	pip install --upgrade pip
+	pip install pylint
 
 install:
 	# This should be run from inside a virtualenv
 	# This builds the environment for the jenkins build
-	pip install --upgrade pip
-	pip install pylint
+
 
 test:
 	# Additional, optional, tests could go here
