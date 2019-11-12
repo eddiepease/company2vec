@@ -17,30 +17,34 @@ pipeline {
                 echo "All checks passed"
             }
         }
-        if(env.BRANCH_NAME == 'master'){
-            stage('Build docker image') {
-                steps {
-                    sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
-                    echo "Image build complete"
-                }
+        stage('Build docker image') {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
             }
-    //         stage('Test docker image') {
-    //             steps {
-    //                 sh "docker run -d --rm -p $httpPort:$httpPort $containerName:$tag"
-    //                 echo "Application started on port: ${httpPort} (http)"
-    //                 echo('NEED TO ADD TEST IN HERE')
-    //                 sh "docker stop $containerName"
-    //             }
-    //         }
-            stage('Deploy to AWS ECR') {
-                steps {
-                    withAWS(credentials:'dc7d59a2-89eb-4fbb-9205-116b02d6cc8f') {
-                        sh '$(aws ecr get-login --no-include-email --region ${AWS_REGION})'
-                        sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-                        sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-                    }
-                    echo "Image push complete"
+            steps {
+                sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
+                echo "Image build complete"
+            }
+        }
+//         stage('Test docker image') {
+//             steps {
+//                 sh "docker run -d --rm -p $httpPort:$httpPort $containerName:$tag"
+//                 echo "Application started on port: ${httpPort} (http)"
+//                 echo('NEED TO ADD TEST IN HERE')
+//                 sh "docker stop $containerName"
+//             }
+//         }
+        stage('Deploy to AWS ECR') {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
+            steps {
+                withAWS(credentials:'dc7d59a2-89eb-4fbb-9205-116b02d6cc8f') {
+                    sh '$(aws ecr get-login --no-include-email --region ${AWS_REGION})'
+                    sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
+                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
                 }
+                echo "Image push complete"
             }
         }
     }
