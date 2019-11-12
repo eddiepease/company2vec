@@ -13,7 +13,7 @@ pipeline {
             steps {
                 // running tests
                 sh 'pylint kleinapp.py --disable=E0401,C0103,W0613'
-	            sh 'pylint app --disable=E0401,W0613,W0201,R0903'
+	            sh 'pylint app --disable=E0401,W0613,W0201,R0903,R0901'
                 echo "All checks passed"
             }
         }
