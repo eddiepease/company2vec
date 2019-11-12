@@ -13,11 +13,14 @@ pipeline {
             steps {
                 // running tests
                 sh 'pylint kleinapp.py --disable=E0401,C0103,W0613'
-	            sh 'pylint app --disable=E0401,W0613,W0201,R0903'
+	            sh 'pylint app --disable=E0401,W0613,W0201,R0903,R0901'
                 echo "All checks passed"
             }
         }
         stage('Build docker image') {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
             steps {
                 sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
                 echo "Image build complete"
@@ -32,6 +35,9 @@ pipeline {
 //             }
 //         }
         stage('Deploy to AWS ECR') {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
             steps {
                 withAWS(credentials:'dc7d59a2-89eb-4fbb-9205-116b02d6cc8f') {
                     sh '$(aws ecr get-login --no-include-email --region ${AWS_REGION})'

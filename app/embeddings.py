@@ -24,7 +24,7 @@ class Embeddings:
         """
 
         embeddings = defaultdict(list)
-        with open('app/data/glove.6B.50d.txt') as csvfile:
+        with open('app/data/glove.6B.50d.txt', encoding="utf-8") as csvfile:
             spamreader = csv.reader(csvfile, delimiter=' ', quoting=csv.QUOTE_NONE)
             for row in spamreader:
                 embeddings[row[0]] = row[1:]
