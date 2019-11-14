@@ -3,3 +3,4 @@ numpy
 requests
 Klein
 pylint
+awscli
