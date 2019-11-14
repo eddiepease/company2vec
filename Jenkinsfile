@@ -18,9 +18,6 @@ pipeline {
             }
         }
         stage('Build docker image') {
-            when {
-                expression { env.BRANCH_NAME == 'master' }
-            }
             steps {
                 sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
                 echo "Image build complete"

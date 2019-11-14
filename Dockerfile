@@ -11,6 +11,9 @@ COPY . /src
 RUN pip install --upgrade pip &&\
 		pip install -r requirements.txt
 
+# Copy data into directory
+RUN aws s3 cp s3://company2vec-data /src/app/data --recursive --no-sign-request
+
 # Expose port 5000
 EXPOSE 5000
 
