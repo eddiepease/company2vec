@@ -1,15 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-    app: company2vec
-    environment: dev
-spec:
-    type: NodePort
-    selector:
+#    annotations:
+#        service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:eu-west-1:xxx:certificate/xxx
+    labels:
         app: company2vec
-        environment: dev
+    name: company2vec
+spec:
+    type: LoadBalancer
     ports:
         - protocol: TCP
           port: 80
-          targetPort: 80
-          nodePort: 5000
+          targetPort: 5000
+    selector:
+        app: company2vec-blue
+        environment: dev

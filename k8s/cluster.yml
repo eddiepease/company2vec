@@ -7,7 +7,5 @@ metadata:
 
 nodeGroups:
     - name: k8s-1
-      instanceType: t2.micro
-      desiredCapacity: 3
-      iam:
-        instanceRoleARN: "arn:aws:iam::341879875473:role/eks_service"
+      instanceType: m5.large
+      desiredCapacity: 2

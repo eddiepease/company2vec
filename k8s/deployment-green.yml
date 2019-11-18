@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: company2vec-deployment
+    name: company2vec-deployment-green
     labels:
         app: company2vec
         environment: dev
@@ -9,12 +9,12 @@ spec:
     replicas: 2
     selector:
         matchLabels:
-            app: company2vec
+            app: company2vec-green
             environment: dev
     template:
         metadata:
             labels:
-                app: company2vec
+                app: company2vec-green
                 environment: dev
         spec:
             containers:

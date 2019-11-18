@@ -47,5 +47,33 @@ pipeline {
                 echo "Image push complete"
             }
         }
+        stage('Setup kubectl context to current cluster') {
+            steps {
+                sh 'kubectl config use-context arn:aws:eks:us-east-1:546547842218:cluster/capstonecluster'
+            }
+        }
+        stage('Blue deployment') {
+            steps {
+                sh 'kubectl apply -f k8s/deployment-blue.yml'
+            }
+        }
+        stage('Green deployment') {
+            steps {
+                sh 'kubectl apply -f k8s/deployment-green.yml'
+            }
+        }
+        stage('Create K8S service') {
+            steps {
+                sh 'kubectl apply -f k8s/service.yml'
+            }
+        }
+        stage('Deployment approval') {
+            input "Deploy new version to Production?"
+        }
+        stage('Update K8S service') {
+            steps {
+                sh 'kubectl apply -f k8s/service.yml'
+            }
+        }
     }
 }
