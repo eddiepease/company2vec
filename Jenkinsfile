@@ -11,7 +11,7 @@ pipeline {
     }
 
     stages {
-        stage {'Start cluster'} {
+        stage ('Start cluster') {
             steps {
                 build job: 'Jenkinsfile.setup'
             }
