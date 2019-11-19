@@ -2,7 +2,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 
 metadata:
-    name: test-cluster
+    name: testcluster
     region: us-west-2
 
 nodeGroups:

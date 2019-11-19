@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_CREDENTIALS_ID = 'dc7d59a2-89eb-4fbb-9205-116b02d6cc8f'
+        CLUSTER_NAME = 'testcluster'
+        AWS_REGION = us-west-2
+    }
+
+    stages {
+        stage('Build cluster') {
+            steps {
+                // build cluster using eksctl
+                sh 'eksctl create cluster -f k8s/cluster.yml'
+            }
+        }
+        stage('Create configuration file') {
+            steps {
+                withAWS(credentials:${AWS_CREDENTIALS_ID}) {
+                    sh "aws eks --region {AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}"
+                    echo "Image build complete"
+                }
+            }
+        }
+    }
+}
