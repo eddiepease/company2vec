@@ -55,7 +55,9 @@ pipeline {
         stage('Setup kubectl context') {
             steps {
                 withAWS{credentials:${AWS_CREDENTIALS_ID}} {
-                    def clusterString = readJSON text: sh (script: "aws eks describe-cluster --name={CLUSTER_NAME}", returnStdout: true)
+                    script {
+                        def clusterString = readJSON text: sh (script: "aws eks describe-cluster --name={CLUSTER_NAME}", returnStdout: true)
+                    }
                     sh 'kubectl config use-context ${clusterString.cluster.arn}'
                 }
             }
@@ -76,7 +78,9 @@ pipeline {
             }
         }
         stage('Deployment approval') {
-            input "Deploy new version to Production?"
+            steps {
+                input(message="Deploy new version to Production?")
+            }
         }
         stage('Update K8S service') {
             steps {
