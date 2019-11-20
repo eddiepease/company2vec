@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AWS_CREDENTIALS_ID = 'dc7d59a2-89eb-4fbb-9205-116b02d6cc8f'
-        CLUSTER_NAME = 'testcluster'
+        CLUSTER_NAME = 'capstonecluster'
         AWS_REGION = us-west-2
     }
 
