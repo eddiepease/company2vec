@@ -52,7 +52,7 @@ pipeline {
 //             }
             steps {
                 // build cluster using eksctl
-                sh 'eksctl create cluster -f k8s/cluster.yml'
+                sh 'eksctl apply cluster -f k8s/cluster.yml'
                 echo "Cluster built"
             }
         }
