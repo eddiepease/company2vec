@@ -58,13 +58,13 @@ pipeline {
         }
         stage('Blue deployment') {
             steps {
-                sh "eksctl create nodegroup --config-file k8s/nodegroup-blue"
+                sh "eksctl create nodegroup --config-file k8s/nodegroup-blue.yml"
                 sh "kubectl apply -f k8s/deployment-blue.yml"
             }
         }
         stage('Green deployment') {
             steps {
-                sh "eksctl create nodegroup --config-file k8s/nodegroup-green"
+                sh "eksctl create nodegroup --config-file k8s/nodegroup-green.yml"
                 sh "kubectl apply -f k8s/deployment-green.yml"
             }
         }
