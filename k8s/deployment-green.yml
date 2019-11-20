@@ -17,7 +17,7 @@ spec:
                 app: company2vec-green
                 environment: dev
         spec:
-            NodeSelector:
+            nodeSelector:
                 type: green
             containers:
                 - name: company2vec
