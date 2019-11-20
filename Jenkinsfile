@@ -48,11 +48,13 @@ pipeline {
 //         }
         stage('Setup kubectl context') {
             steps {
-                withAWS{credentials:${AWS_CREDENTIALS_ID}} {
-                    script {
-                        def clusterString = readJSON text: sh (script: "aws eks describe-cluster --name={CLUSTER_NAME}", returnStdout: true)
-                    }
-                    sh 'kubectl config use-context ${clusterString.cluster.arn}'
+                withAWS{credentials:'dc7d59a2-89eb-4fbb-9205-116b02d6cc8f'} {
+                    sh (script: "aws eks describe-cluster --name={CLUSTER_NAME}", returnStdout: true)
+                    echo "This worked"
+//                     script {
+//                         def clusterString = readJSON text: sh (script: "aws eks describe-cluster --name={CLUSTER_NAME}", returnStdout: true)
+//                     }
+//                     sh 'kubectl config use-context ${clusterString.cluster.arn}'
                 }
             }
         }
