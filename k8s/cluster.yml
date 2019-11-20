@@ -4,8 +4,3 @@ kind: ClusterConfig
 metadata:
     name: capstonecluster
     region: us-west-2
-
-nodeGroups:
-    - name: k8s-1
-      instanceType: m5.large
-      desiredCapacity: 2

@@ -17,6 +17,8 @@ spec:
                 app: company2vec-green
                 environment: dev
         spec:
+            NodeSelector:
+                type: green
             containers:
                 - name: company2vec
                   image: 341879875473.dkr.ecr.us-west-2.amazonaws.com/company2vec:latest
