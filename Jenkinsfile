@@ -46,7 +46,30 @@ pipeline {
 //                 echo "Image push complete"
 //             }
 //         }
+        stage('Build cluster') {
+//             when {
+//                 expression { env.BRANCH_NAME == 'master' }
+//             }
+            steps {
+                // build cluster using eksctl
+                sh 'eksctl create cluster -f k8s/cluster.yml'
+                echo "Cluster built"
+            }
+        }
+        stage('Create configuration file') {
+//             when {
+//                 expression { env.BRANCH_NAME == 'master' }
+//             }
+            steps {
+                withAWS(credentials:"${AWS_CREDENTIALS_ID}") {
+                    sh "aws eks --region ${AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}"
+                }
+            }
+        }
         stage('Setup kubectl context') {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
             steps {
                 withAWS(credentials:"${AWS_CREDENTIALS_ID}") {
                     script {
@@ -57,28 +80,46 @@ pipeline {
             }
         }
         stage('Blue deployment') {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
             steps {
                 sh "eksctl create nodegroup --config-file k8s/nodegroup-blue.yml"
                 sh "kubectl apply -f k8s/deployment-blue.yml"
+                echo 'Blue deployment succeeded'
             }
         }
         stage('Green deployment') {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
             steps {
                 sh "eksctl create nodegroup --config-file k8s/nodegroup-green.yml"
                 sh "kubectl apply -f k8s/deployment-green.yml"
+                echo 'Green deployment succeeded'
             }
         }
         stage('Create K8S service') {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
             steps {
                 sh "kubectl apply -f k8s/service.yml"
+                echo 'Service created'
             }
         }
         stage('Deployment approval') {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
             steps {
                 input(message="Deploy new version to Production?")
             }
         }
         stage('Update K8S service') {
+            when {
+                expression { env.BRANCH_NAME == 'master' }
+            }
             steps {
                 sh "kubectl apply -f k8s/service.yml"
             }
