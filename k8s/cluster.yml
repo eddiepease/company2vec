@@ -1,0 +1,6 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+    name: capstonecluster
+    region: us-west-2

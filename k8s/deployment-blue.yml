@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: company2vec-deployment-blue
+    labels:
+        app: company2vec
+        environment: dev
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: company2vec-blue
+            environment: dev
+    template:
+        metadata:
+            labels:
+                app: company2vec-blue
+                environment: dev
+        spec:
+            nodeSelector:
+                type: blue
+            containers:
+                - name: company2vec
+                  image: 341879875473.dkr.ecr.us-west-2.amazonaws.com/company2vec:latest
+                  ports:
+                      - containerPort: 5000

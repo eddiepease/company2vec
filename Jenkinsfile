@@ -6,6 +6,9 @@ pipeline {
         CONTAINER_TAG = 'latest'
         AWS_ACCOUNT_ID = '341879875473'
         AWS_REGION = 'us-west-2'
+        CLUSTER_NAME = 'capstonecluster'
+        AWS_CREDENTIALS_ID = 'dc7d59a2-89eb-4fbb-9205-116b02d6cc8f'
+        MAIN_BRANCH = 'master'
     }
 
     stages {
@@ -33,15 +36,74 @@ pipeline {
 //         }
         stage('Deploy to AWS ECR') {
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
             }
             steps {
-                withAWS(credentials:'dc7d59a2-89eb-4fbb-9205-116b02d6cc8f') {
+                withAWS(credentials:"${AWS_CREDENTIALS_ID}") {
                     sh '$(aws ecr get-login --no-include-email --region ${AWS_REGION})'
                     sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
                     sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
                 }
                 echo "Image push complete"
+            }
+        }
+        stage('Setup kubectl context') {
+            when {
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
+            }
+            steps {
+                withAWS(credentials:"${AWS_CREDENTIALS_ID}") {
+                    script {
+                        def clusterString = readJSON text: sh (script: "aws eks describe-cluster --name=${CLUSTER_NAME}", returnStdout: true)
+                        sh "kubectl config use-context ${clusterString.cluster.arn}"
+                    }
+                }
+            }
+        }
+        stage('Blue deployment') {
+            when {
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
+            }
+            steps {
+                sh "eksctl create nodegroup --config-file k8s/nodegroup-blue.yml"
+                sh "kubectl apply -f k8s/deployment-blue.yml"
+                echo 'Blue deployment succeeded'
+            }
+        }
+        stage('Green deployment') {
+            when {
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
+            }
+            steps {
+                sh "eksctl create nodegroup --config-file k8s/nodegroup-green.yml"
+                sh "kubectl apply -f k8s/deployment-green.yml"
+                echo 'Green deployment succeeded'
+            }
+        }
+        stage('Create K8S service') {
+            when {
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
+            }
+            steps {
+                sh "kubectl apply -f k8s/service.yml"
+                echo 'Service created'
+            }
+        }
+        stage('Deployment approval') {
+            when {
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
+            }
+            steps {
+                input(message="Deploy new version to Production?")
+            }
+        }
+        stage('Update K8S service') {
+            when {
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
+            }
+            steps {
+                sh "kubectl apply -f k8s/service.yml"
+                echo 'Service updated'
             }
         }
     }
