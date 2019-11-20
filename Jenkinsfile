@@ -38,7 +38,7 @@ pipeline {
 //                 expression { env.BRANCH_NAME == 'master' }
 //             }
 //             steps {
-//                 withAWS(credentials:${AWS_CREDENTIALS_ID}) {
+//                 withAWS(credentials:"${AWS_CREDENTIALS_ID}") {
 //                     sh '$(aws ecr get-login --no-include-email --region ${AWS_REGION})'
 //                     sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
 //                     sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
@@ -48,7 +48,7 @@ pipeline {
 //         }
         stage('Setup kubectl context') {
             steps {
-                withAWS(credentials:${AWS_CREDENTIALS_ID}) {
+                withAWS(credentials:"${AWS_CREDENTIALS_ID}") {
                     script {
                         def clusterString = readJSON text: sh (script: "aws eks describe-cluster --name={CLUSTER_NAME}", returnStdout: true)
                     }
