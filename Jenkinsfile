@@ -52,23 +52,23 @@ pipeline {
                     script {
                         def clusterString = readJSON text: sh (script: "aws eks describe-cluster --name=${CLUSTER_NAME}", returnStdout: true)
                     }
-                    sh 'kubectl config use-context ${clusterString.cluster.arn}'
+                    sh "kubectl config use-context ${clusterString.cluster.arn}"
                 }
             }
         }
         stage('Blue deployment') {
             steps {
-                sh 'kubectl apply -f k8s/deployment-blue.yml'
+                sh "kubectl apply -f k8s/deployment-blue.yml"
             }
         }
         stage('Green deployment') {
             steps {
-                sh 'kubectl apply -f k8s/deployment-green.yml'
+                sh "kubectl apply -f k8s/deployment-green.yml"
             }
         }
         stage('Create K8S service') {
             steps {
-                sh 'kubectl apply -f k8s/service.yml'
+                sh "kubectl apply -f k8s/service.yml"
             }
         }
         stage('Deployment approval') {
@@ -78,7 +78,7 @@ pipeline {
         }
         stage('Update K8S service') {
             steps {
-                sh 'kubectl apply -f k8s/service.yml'
+                sh "kubectl apply -f k8s/service.yml"
             }
         }
     }
