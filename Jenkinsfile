@@ -52,7 +52,9 @@ pipeline {
                     script {
                         def clusterString = readJSON text: sh (script: "aws eks describe-cluster --name=${CLUSTER_NAME}", returnStdout: true)
                     }
-                    sh "kubectl config use-context ${clusterString.cluster.arn}"
+                    //sh "kubectl config use-context ${clusterString.cluster.arn}"
+                    echo "${clusterString.cluster.arn}"
+                    echo "${clusterString}.cluster.arn"
                 }
             }
         }
