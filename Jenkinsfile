@@ -51,10 +51,12 @@ pipeline {
                 withAWS(credentials:"${AWS_CREDENTIALS_ID}") {
                     script {
                         def clusterString = readJSON text: sh (script: "aws eks describe-cluster --name=${CLUSTER_NAME}", returnStdout: true)
+                        echo "${clusterString.cluster.arn}"
+                        echo "${clusterString}.cluster.arn
                     }
                     //sh "kubectl config use-context ${clusterString.cluster.arn}"
                     //echo "${clusterString.cluster.arn}"
-                    echo "${clusterString}.cluster.arn"
+                    // echo "${clusterString}.cluster.arn"
                 }
             }
         }
