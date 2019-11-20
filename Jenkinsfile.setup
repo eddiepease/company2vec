@@ -11,14 +11,15 @@ pipeline {
         stage('Build cluster') {
             steps {
                 // build cluster using eksctl
-                sh 'eksctl create cluster -f k8s/cluster.yml'
+                sh "eksctl create cluster -f k8s/cluster.yml"
+                echo "Cluster built"
             }
         }
         stage('Create configuration file') {
             steps {
                 withAWS(credentials:${AWS_CREDENTIALS_ID}) {
-                    sh "aws eks --region {AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}"
-                    echo "Image build complete"
+                    sh "aws eks --region ${AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}"
+                    echo "Configuation created"
                 }
             }
         }

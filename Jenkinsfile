@@ -8,67 +8,48 @@ pipeline {
         AWS_REGION = 'us-west-2'
         CLUSTER_NAME = 'capstonecluster'
         AWS_CREDENTIALS_ID = 'dc7d59a2-89eb-4fbb-9205-116b02d6cc8f'
+        MAIN_BRANCH = 'master'
     }
 
     stages {
-//         stage('Pre-Build Checks') {
-//             steps {
-//                 // running tests
-//                 sh 'pylint kleinapp.py --disable=E0401,C0103,W0613'
-// 	            sh 'pylint app --disable=E0401,W0613,W0201,R0903,R0901'
-//                 echo "All checks passed"
-//             }
-//         }
-//         stage('Build docker image') {
-//             steps {
-//                 sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
-//                 echo "Image build complete"
-//             }
-//         }
-// //         stage('Test docker image') {
-// //             steps {
-// //                 sh "docker run -d --rm -p $httpPort:$httpPort $containerName:$tag"
-// //                 echo "Application started on port: ${httpPort} (http)"
-// //                 echo('NEED TO ADD TEST IN HERE')
-// //                 sh "docker stop $containerName"
-// //             }
-// //         }
-//         stage('Deploy to AWS ECR') {
-//             when {
-//                 expression { env.BRANCH_NAME == 'master' }
-//             }
-//             steps {
-//                 withAWS(credentials:"${AWS_CREDENTIALS_ID}") {
-//                     sh '$(aws ecr get-login --no-include-email --region ${AWS_REGION})'
-//                     sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-//                     sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
-//                 }
-//                 echo "Image push complete"
-//             }
-//         }
-        stage('Build cluster') {
-//             when {
-//                 expression { env.BRANCH_NAME == 'master' }
-//             }
+        stage('Pre-Build Checks') {
             steps {
-                // build cluster using eksctl
-                sh 'eksctl apply cluster -f k8s/cluster.yml'
-                echo "Cluster built"
+                // running tests
+                sh 'pylint kleinapp.py --disable=E0401,C0103,W0613'
+	            sh 'pylint app --disable=E0401,W0613,W0201,R0903,R0901'
+                echo "All checks passed"
             }
         }
-        stage('Create configuration file') {
-//             when {
-//                 expression { env.BRANCH_NAME == 'master' }
+        stage('Build docker image') {
+            steps {
+                sh "docker build -t ${CONTAINER_NAME}:${CONTAINER_TAG} --pull --no-cache ."
+                echo "Image build complete"
+            }
+        }
+//         stage('Test docker image') {
+//             steps {
+//                 sh "docker run -d --rm -p $httpPort:$httpPort $containerName:$tag"
+//                 echo "Application started on port: ${httpPort} (http)"
+//                 echo('NEED TO ADD TEST IN HERE')
+//                 sh "docker stop $containerName"
 //             }
+//         }
+        stage('Deploy to AWS ECR') {
+            when {
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
+            }
             steps {
                 withAWS(credentials:"${AWS_CREDENTIALS_ID}") {
-                    sh "aws eks --region ${AWS_REGION} update-kubeconfig --name ${CLUSTER_NAME}"
+                    sh '$(aws ecr get-login --no-include-email --region ${AWS_REGION})'
+                    sh "docker tag ${CONTAINER_NAME}:${CONTAINER_TAG} ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
+                    sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${CONTAINER_NAME}:${CONTAINER_TAG}"
                 }
+                echo "Image push complete"
             }
         }
         stage('Setup kubectl context') {
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
             }
             steps {
                 withAWS(credentials:"${AWS_CREDENTIALS_ID}") {
@@ -81,7 +62,7 @@ pipeline {
         }
         stage('Blue deployment') {
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
             }
             steps {
                 sh "eksctl create nodegroup --config-file k8s/nodegroup-blue.yml"
@@ -91,7 +72,7 @@ pipeline {
         }
         stage('Green deployment') {
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
             }
             steps {
                 sh "eksctl create nodegroup --config-file k8s/nodegroup-green.yml"
@@ -101,7 +82,7 @@ pipeline {
         }
         stage('Create K8S service') {
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
             }
             steps {
                 sh "kubectl apply -f k8s/service.yml"
@@ -110,7 +91,7 @@ pipeline {
         }
         stage('Deployment approval') {
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
             }
             steps {
                 input(message="Deploy new version to Production?")
@@ -118,10 +99,11 @@ pipeline {
         }
         stage('Update K8S service') {
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.BRANCH_NAME == '${MAIN_BRANCH}' }
             }
             steps {
                 sh "kubectl apply -f k8s/service.yml"
+                echo 'Service updated'
             }
         }
     }
