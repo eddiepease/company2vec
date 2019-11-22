@@ -62,6 +62,7 @@ jobs:
                   destination: test-reports
 
             # building docker image
+            - setup_remote_docker:
             - run:
                   name: build docker image
                   command: |
