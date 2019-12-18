@@ -1,5 +1,6 @@
 """ This module defines a generic scrapy spider that can be used for any website"""
 
+import os
 import re
 import json
 from urllib.parse import urlparse
@@ -25,7 +26,8 @@ class GenericSpider(CrawlSpider):
         Rule(LinkExtractor(), callback='parse_item', follow=True),
     )
 
-    with open('app/data/words_dictionary.json') as json_file:
+    dirname = os.path.dirname(__file__)
+    with open(os.path.join('/'.join(dirname.split('/')[:-1]), 'data/', 'words_dictionary.json')) as json_file:
         lang_dictionary = json.load(json_file)
 
     @classmethod
