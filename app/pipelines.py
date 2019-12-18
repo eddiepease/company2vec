@@ -4,6 +4,8 @@ import os
 import json
 from scrapy import signals
 from scrapy.crawler import CrawlerRunner
+from twisted.internet import reactor
+from twisted.internet.defer import inlineCallbacks, returnValue
 
 from app.spiders.website_spider import GenericSpider
 from app.settings import WebsiteSettings
@@ -97,7 +99,7 @@ class Pipeline:
         """
         Carry out scrape of website
         :param url: URL string
-        :return: None
+        :return: deferred: deferred object
         """
 
         # remove historic file
@@ -112,3 +114,24 @@ class Pipeline:
         deferred.addCallback(return_spider_output)
         deferred.addCallback(return_company_embedding)
         return deferred
+
+    def run_scrape(self, url):
+
+        """
+        Runs a twisted reactor and returns the scraped output to a local file
+        :param: url: company url
+        """
+
+        # remove historic file
+        scrape_file_location = 'app/scrape_output/result.json'
+        if os.path.exists(scrape_file_location):
+            os.remove(scrape_file_location)
+
+        # conduct scrape
+        runner = MyCrawlerRunner(settings=WebsiteSettings().
+                                 generate_settings_dict(file_location=scrape_file_location))
+        deferred = runner.crawl(self.scraper.create(url))
+
+        # run reactor
+        reactor.callLater(30, reactor.stop)
+        reactor.run()

@@ -1,7 +1,9 @@
 """This module provides a quick way to start using company2vec"""
 
-from app.pipelines import Pipeline
+import json
+
 from app.urls import URLFinder
+from app.pipelines import Pipeline, return_company_embedding
 
 
 def run_single(company_name):
@@ -9,31 +11,30 @@ def run_single(company_name):
     """
     Finds the URL, scrapes the website, returns the embedding
     :param company_name: string of company name
-    :return: result: json dictionary of company embedding
+    :return: embed: json dictionary of company embedding
     """
 
-    url = URLFinder().run(company=company_name)
-    result = Pipeline(overwrite=False).run(url=url)
+    # finding URL
+    print('Finding URL...')
+    url = URLFinder().run(company_name)
 
-    return result
+    # running scrape
+    print('Running scrape...')
+    Pipeline(overwrite=False).run_scrape(url)
 
+    # return embeddings
+    print('Generating embedding...')
+    scrape_file_location = 'app/scrape_output/result.json'
+    with open(scrape_file_location) as json_file:
+        data = json.load(json_file)
+    embed = return_company_embedding(data)
 
-def run_multiple(company_list):
-
-    """
-    Returns a list of a company embeddigs, given a respective list of company names
-    :param company_list: a list of company names (string)
-    :return: result: a list of embeddings (list of dicts)
-    """
-
-    result = []
-    for cmp in company_list:
-        result.append(run_single(company_name=cmp))
-
-    return result
+    return embed
 
 
 if __name__ == '__main__':
-    companies = ['bbc', 'pharmaforesight']
-    embeddings = run_multiple(company_list=companies)
-    print('Company embeddings are:', embeddings)
+
+    company = 'bbc'
+    embedding = run_single(company)
+    print(embedding)
+
