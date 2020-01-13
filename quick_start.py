@@ -11,9 +11,10 @@ def run_single(company_name):
     """
     Finds the URL, scrapes the website, returns the embedding
 
-    :param company_name: string of company name
+    :param company_name: company name
+    :type company_name: str
 
-    :return embed: json dictionary of company embedding
+    :return: json dictionary of company embedding dictionary
     """
 
     # finding URL

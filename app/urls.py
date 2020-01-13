@@ -20,8 +20,11 @@ class URLFinder:
         Extracts the url most likely to be the company website
 
         :param results_json: output from the API
+        :type results_json: dict
         :param url_count: iterative parameter to select url in search results
-        :return url: url string
+        :type url_count: int
+
+        :return url string
         """
 
         excluded_words = ['wikipedia', 'linkedin', 'bloomberg']
@@ -37,9 +40,12 @@ class URLFinder:
     def run(self, company):
 
         """
-        Calls the Azure API and returns the
-        :param company: company name string
-        :return url: most likely company URL
+        Calls the Azure API and returns the url
+
+        :param company: company name
+        :type company: str
+
+        :return: most likely company URL
         """
 
         # access API

@@ -21,8 +21,9 @@ class MyCrawlerRunner(CrawlerRunner):
         Launch a crawl and return output as deferred
 
         :param crawler_or_spidercls: scrapy crawler
+        :type crawler_or_spidercls: cls
 
-        :return dfd: deferred object with crawled output
+        :return: deferred object with crawled output
         """
 
         # keep all items scraped
@@ -47,8 +48,9 @@ class MyCrawlerRunner(CrawlerRunner):
         Append each individual item scraped
 
         :param item: scrapy item
+        :type item: cls
 
-        :return None
+        :return: None
         """
 
         self.items.append(item)
@@ -58,17 +60,20 @@ class MyCrawlerRunner(CrawlerRunner):
         """
         Return scrapy items
 
-        :return items: scrapy items
+        :return scrapy items
         """
 
         return self.items
 
 
 def return_spider_output(output):
-    """
-    :param output: items scraped by CrawlerRunner
 
-    :return json with list of items
+    """
+    Turns scrapy output into dictionaries
+    :param output: items scraped by CrawlerRunner
+    :type output: dict
+
+    :return: json with list of items
     """
 
     # this just turns items into dictionaries
@@ -76,12 +81,14 @@ def return_spider_output(output):
 
 
 def return_company_embedding(company_data):
+
     """
-    function
+    Turns scrapy output into an embedding
 
     :param company_data: scraped data for the company, list of dictionaries
+    :type company_data: list
 
-    :return company_dict: dictionary of company embedding
+    :return: company embedding dictionary
     """
 
     embed = Embeddings()
@@ -106,9 +113,10 @@ class Pipeline:
         """
         Carry out scrape of website
 
-        :param url: URL string
+        :param url: URL of website
+        :type url: str
 
-        :return deferred: deferred object
+        :return: deferred object
         """
 
         # remove historic file
@@ -129,7 +137,10 @@ class Pipeline:
         """
         Runs a twisted reactor and returns the scraped output to a local file
 
-        :param: url: company url
+        :param url: URL of website
+        :type url: str
+
+        :return: None
         """
 
         # remove historic file

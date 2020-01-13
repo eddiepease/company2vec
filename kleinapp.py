@@ -26,10 +26,10 @@ def create_embedding(request, company_name):
     """
     Finds the URL, scrapes the website, returns the embedding
 
-    :param company_name: string of company name
+    :param company_name: company name
     :type company_name: str
 
-    :returns: json dictionary of company embedding
+    :return: json dictionary of company embedding
     """
 
     url = URLFinder().run(company=company_name)

@@ -21,7 +21,7 @@ class Embeddings:
         """
         Class method to read in embeddings
 
-        :return embeddings: dictionary of embeddings, key:word, value:embedding
+        :return: dictionary of embeddings, key:word, value:embedding
         """
 
         embeddings = defaultdict(list)
@@ -36,9 +36,10 @@ class Embeddings:
         """
         Create single embedding for company
 
-        :param company_name: company name string
+        :param company_data: scraped company text
+        :type company_data: dict
 
-        :return company_embedding: embedding for single company, numpy array
+        :return: embedding for single company, numpy array
         """
 
         # # reading company text
