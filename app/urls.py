@@ -18,9 +18,10 @@ class URLFinder:
 
         """
         Extracts the url most likely to be the company website
+
         :param results_json: output from the API
-        :param url_count:
-        :return:
+        :param url_count: iterative parameter to select url in search results
+        :return url: url string
         """
 
         excluded_words = ['wikipedia', 'linkedin', 'bloomberg']
@@ -38,7 +39,7 @@ class URLFinder:
         """
         Calls the Azure API and returns the
         :param company: company name string
-        :return: url: most likely company URL
+        :return url: most likely company URL
         """
 
         # access API

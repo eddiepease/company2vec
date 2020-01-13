@@ -35,8 +35,10 @@ class GenericSpider(CrawlSpider):
 
         """
         class method to create each new spider
+
         :param link: URL link of domain
-        :return: insantiated spider class for that domain
+
+        :return insantiated spider class for that domain
         """
 
         domain = urlparse(link).netloc.lower()
@@ -54,8 +56,10 @@ class GenericSpider(CrawlSpider):
 
         """
         Ordering the response from each URL
+
         :param response: response from URL
-        :return: list of dictionaries- each element of list with 'company_url' & 'company_name' keys
+
+        :return list of dictionaries- each element of list with 'company_url' & 'company_name' keys
         """
 
         # extract text
