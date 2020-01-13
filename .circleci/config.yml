@@ -48,7 +48,7 @@ jobs:
                   command: |
                       . venv/bin/activate
                       pylint kleinapp.py --disable=E0401,C0103,W0613
-                      pylint app --disable=E0401,W0613,W0201,R0903,R0901
+                      pylint app --disable=E0401,W0613,W0201,R0903,R0901,E1101,W0612,W0611
 
             - run:
                   name: run tests
