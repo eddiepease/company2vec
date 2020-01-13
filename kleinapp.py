@@ -13,6 +13,7 @@ def home(request):
 
     """
     A welcome function used for testing
+
     :return: string
     """
 
@@ -24,8 +25,11 @@ def create_embedding(request, company_name):
 
     """
     Finds the URL, scrapes the website, returns the embedding
-    :param company_name: string of company name
-    :return: result: json dictionary of company embedding
+
+    :param company_name: company name
+    :type company_name: str
+
+    :return: company embedding dictionary
     """
 
     url = URLFinder().run(company=company_name)

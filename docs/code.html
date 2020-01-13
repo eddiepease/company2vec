@@ -1,0 +1,388 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Code Documentation &#8212; company2vec 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="company2vec documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="code-documentation">
+<h1>Code Documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="main-modules">
+<h2>Main Modules<a class="headerlink" href="#main-modules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-quick_start">
+<span id="quickstart"></span><h3>Quickstart<a class="headerlink" href="#module-quick_start" title="Permalink to this headline">¶</a></h3>
+<p>This module provides a quick way to start using company2vec</p>
+<dl class="function">
+<dt id="quick_start.run_single">
+<code class="sig-prename descclassname">quick_start.</code><code class="sig-name descname">run_single</code><span class="sig-paren">(</span><em class="sig-param">company_name</em><span class="sig-paren">)</span><a class="headerlink" href="#quick_start.run_single" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the URL, scrapes the website, returns the embedding</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>company_name</strong> (<em>str</em>) – company name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>company embedding dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-kleinapp">
+<span id="web-application"></span><h3>Web Application<a class="headerlink" href="#module-kleinapp" title="Permalink to this headline">¶</a></h3>
+<p>This module is a Klein web app for returning company embeddings</p>
+<dl class="function">
+<dt id="kleinapp.create_embedding">
+<code class="sig-prename descclassname">kleinapp.</code><code class="sig-name descname">create_embedding</code><span class="sig-paren">(</span><em class="sig-param">request</em>, <em class="sig-param">company_name</em><span class="sig-paren">)</span><a class="headerlink" href="#kleinapp.create_embedding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds the URL, scrapes the website, returns the embedding</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>company_name</strong> (<em>str</em>) – company name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>company embedding dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="kleinapp.home">
+<code class="sig-prename descclassname">kleinapp.</code><code class="sig-name descname">home</code><span class="sig-paren">(</span><em class="sig-param">request</em><span class="sig-paren">)</span><a class="headerlink" href="#kleinapp.home" title="Permalink to this definition">¶</a></dt>
+<dd><p>A welcome function used for testing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="app">
+<h2>App<a class="headerlink" href="#app" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-app.embeddings">
+<span id="app-embeddings-module"></span><h3>app.embeddings module<a class="headerlink" href="#module-app.embeddings" title="Permalink to this headline">¶</a></h3>
+<p>This module generates company embeddings given company data and pre-trained word embeddings</p>
+<dl class="class">
+<dt id="app.embeddings.Embeddings">
+<em class="property">class </em><code class="sig-prename descclassname">app.embeddings.</code><code class="sig-name descname">Embeddings</code><a class="headerlink" href="#app.embeddings.Embeddings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Helper class for embeddings</p>
+<dl class="method">
+<dt id="app.embeddings.Embeddings.create_single_embedding">
+<code class="sig-name descname">create_single_embedding</code><span class="sig-paren">(</span><em class="sig-param">company_data</em><span class="sig-paren">)</span><a class="headerlink" href="#app.embeddings.Embeddings.create_single_embedding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create single embedding for company</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>company_data</strong> (<em>dict</em>) – scraped company text</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>embedding for single company, numpy array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="app.embeddings.Embeddings.read_glove_embeddings">
+<em class="property">classmethod </em><code class="sig-name descname">read_glove_embeddings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#app.embeddings.Embeddings.read_glove_embeddings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class method to read in embeddings</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dictionary of embeddings, key:word, value:embedding</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-app.items">
+<span id="app-items-module"></span><h3>app.items module<a class="headerlink" href="#module-app.items" title="Permalink to this headline">¶</a></h3>
+<p>This module defines the scrapy item</p>
+<dl class="class">
+<dt id="app.items.WebsiteItem">
+<em class="property">class </em><code class="sig-prename descclassname">app.items.</code><code class="sig-name descname">WebsiteItem</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.items.WebsiteItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scrapy.item.Item</span></code></p>
+<p>Defines the item output</p>
+<dl class="attribute">
+<dt id="app.items.WebsiteItem.fields">
+<code class="sig-name descname">fields</code><em class="property"> = {'company_text': {}, 'company_url': {}}</em><a class="headerlink" href="#app.items.WebsiteItem.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-app.pipelines">
+<span id="app-pipelines-module"></span><h3>app.pipelines module<a class="headerlink" href="#module-app.pipelines" title="Permalink to this headline">¶</a></h3>
+<p>This module defines all the objects necessary to control the app</p>
+<dl class="class">
+<dt id="app.pipelines.MyCrawlerRunner">
+<em class="property">class </em><code class="sig-prename descclassname">app.pipelines.</code><code class="sig-name descname">MyCrawlerRunner</code><span class="sig-paren">(</span><em class="sig-param">settings=None</em><span class="sig-paren">)</span><a class="headerlink" href="#app.pipelines.MyCrawlerRunner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scrapy.crawler.CrawlerRunner</span></code></p>
+<p>Crawler object that collects items and returns output after finishing crawl.</p>
+<dl class="method">
+<dt id="app.pipelines.MyCrawlerRunner.crawl">
+<code class="sig-name descname">crawl</code><span class="sig-paren">(</span><em class="sig-param">crawler_or_spidercls</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#app.pipelines.MyCrawlerRunner.crawl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Launch a crawl and return output as deferred</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>crawler_or_spidercls</strong> (<em>cls</em>) – scrapy crawler</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>deferred object with crawled output</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="app.pipelines.MyCrawlerRunner.item_scraped">
+<code class="sig-name descname">item_scraped</code><span class="sig-paren">(</span><em class="sig-param">item</em>, <em class="sig-param">response</em>, <em class="sig-param">spider</em><span class="sig-paren">)</span><a class="headerlink" href="#app.pipelines.MyCrawlerRunner.item_scraped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append each individual item scraped</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>item</strong> (<em>cls</em>) – scrapy item</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="app.pipelines.MyCrawlerRunner.return_items">
+<code class="sig-name descname">return_items</code><span class="sig-paren">(</span><em class="sig-param">result</em><span class="sig-paren">)</span><a class="headerlink" href="#app.pipelines.MyCrawlerRunner.return_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return scrapy items</p>
+<p>:return scrapy items</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="app.pipelines.Pipeline">
+<em class="property">class </em><code class="sig-prename descclassname">app.pipelines.</code><code class="sig-name descname">Pipeline</code><span class="sig-paren">(</span><em class="sig-param">overwrite</em><span class="sig-paren">)</span><a class="headerlink" href="#app.pipelines.Pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Brings together all the scrapy components</p>
+<dl class="method">
+<dt id="app.pipelines.Pipeline.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">url</em><span class="sig-paren">)</span><a class="headerlink" href="#app.pipelines.Pipeline.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Carry out scrape of website</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – URL of website</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>deferred object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="app.pipelines.Pipeline.run_scrape">
+<code class="sig-name descname">run_scrape</code><span class="sig-paren">(</span><em class="sig-param">url</em><span class="sig-paren">)</span><a class="headerlink" href="#app.pipelines.Pipeline.run_scrape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs a twisted reactor and returns the scraped output to a local file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – URL of website</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="app.pipelines.return_company_embedding">
+<code class="sig-prename descclassname">app.pipelines.</code><code class="sig-name descname">return_company_embedding</code><span class="sig-paren">(</span><em class="sig-param">company_data</em><span class="sig-paren">)</span><a class="headerlink" href="#app.pipelines.return_company_embedding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns scrapy output into an embedding</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>company_data</strong> (<em>list</em>) – scraped data for the company, list of dictionaries</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>company embedding dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="app.pipelines.return_spider_output">
+<code class="sig-prename descclassname">app.pipelines.</code><code class="sig-name descname">return_spider_output</code><span class="sig-paren">(</span><em class="sig-param">output</em><span class="sig-paren">)</span><a class="headerlink" href="#app.pipelines.return_spider_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turns scrapy output into dictionaries
+:param output: items scraped by CrawlerRunner
+:type output: dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>json with list of items</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-app.settings">
+<span id="app-settings-module"></span><h3>app.settings module<a class="headerlink" href="#module-app.settings" title="Permalink to this headline">¶</a></h3>
+<p>This module defines the scrapy settings</p>
+<dl class="class">
+<dt id="app.settings.WebsiteSettings">
+<em class="property">class </em><code class="sig-prename descclassname">app.settings.</code><code class="sig-name descname">WebsiteSettings</code><span class="sig-paren">(</span><em class="sig-param">values=None</em>, <em class="sig-param">priority='project'</em><span class="sig-paren">)</span><a class="headerlink" href="#app.settings.WebsiteSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">scrapy.settings.Settings</span></code></p>
+<p>Defining the settings for the scraper</p>
+<dl class="method">
+<dt id="app.settings.WebsiteSettings.generate_settings_dict">
+<em class="property">static </em><code class="sig-name descname">generate_settings_dict</code><span class="sig-paren">(</span><em class="sig-param">file_location</em><span class="sig-paren">)</span><a class="headerlink" href="#app.settings.WebsiteSettings.generate_settings_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generating the settings dictionary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_location</strong> (<em>str</em>) – temporary file location</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>setting dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-app.urls">
+<span id="app-urls-module"></span><h3>app.urls module<a class="headerlink" href="#module-app.urls" title="Permalink to this headline">¶</a></h3>
+<p>This module returns a company URL, given a company name</p>
+<dl class="class">
+<dt id="app.urls.URLFinder">
+<em class="property">class </em><code class="sig-prename descclassname">app.urls.</code><code class="sig-name descname">URLFinder</code><a class="headerlink" href="#app.urls.URLFinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Uses the azure search API to search for company url given name</p>
+<dl class="method">
+<dt id="app.urls.URLFinder.choose_url">
+<code class="sig-name descname">choose_url</code><span class="sig-paren">(</span><em class="sig-param">results_json</em>, <em class="sig-param">url_count=0</em><span class="sig-paren">)</span><a class="headerlink" href="#app.urls.URLFinder.choose_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the url most likely to be the company website</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results_json</strong> (<em>dict</em>) – output from the API</p></li>
+<li><p><strong>url_count</strong> (<em>int</em>) – iterative parameter to select url in search results</p></li>
+</ul>
+</dd>
+</dl>
+<p>:return url string</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="app.urls.URLFinder.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">company</em><span class="sig-paren">)</span><a class="headerlink" href="#app.urls.URLFinder.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls the Azure API and returns the url</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>company</strong> (<em>str</em>) – company name</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>most likely company URL</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">company2vec</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Code Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#main-modules">Main Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#app">App</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">company2vec documentation</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Eddie Pease.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/code.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

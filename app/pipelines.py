@@ -4,6 +4,7 @@ import os
 import json
 from scrapy import signals
 from scrapy.crawler import CrawlerRunner
+from twisted.internet import reactor
 
 from app.spiders.website_spider import GenericSpider
 from app.settings import WebsiteSettings
@@ -18,8 +19,11 @@ class MyCrawlerRunner(CrawlerRunner):
 
         """
         Launch a crawl and return output as deferred
+
         :param crawler_or_spidercls: scrapy crawler
-        :return: dfd: deferred object with crawled output
+        :type crawler_or_spidercls: cls
+
+        :return: deferred object with crawled output
         """
 
         # keep all items scraped
@@ -42,7 +46,10 @@ class MyCrawlerRunner(CrawlerRunner):
 
         """
         Append each individual item scraped
+
         :param item: scrapy item
+        :type item: cls
+
         :return: None
         """
 
@@ -52,15 +59,20 @@ class MyCrawlerRunner(CrawlerRunner):
 
         """
         Return scrapy items
-        :return: items: scrapy items
+
+        :return scrapy items
         """
 
         return self.items
 
 
 def return_spider_output(output):
+
     """
+    Turns scrapy output into dictionaries
     :param output: items scraped by CrawlerRunner
+    :type output: dict
+
     :return: json with list of items
     """
 
@@ -69,10 +81,14 @@ def return_spider_output(output):
 
 
 def return_company_embedding(company_data):
+
     """
-    function
+    Turns scrapy output into an embedding
+
     :param company_data: scraped data for the company, list of dictionaries
-    :return:
+    :type company_data: list
+
+    :return: company embedding dictionary
     """
 
     embed = Embeddings()
@@ -96,8 +112,11 @@ class Pipeline:
 
         """
         Carry out scrape of website
-        :param url: URL string
-        :return: None
+
+        :param url: URL of website
+        :type url: str
+
+        :return: deferred object
         """
 
         # remove historic file
@@ -112,3 +131,28 @@ class Pipeline:
         deferred.addCallback(return_spider_output)
         deferred.addCallback(return_company_embedding)
         return deferred
+
+    def run_scrape(self, url):
+
+        """
+        Runs a twisted reactor and returns the scraped output to a local file
+
+        :param url: URL of website
+        :type url: str
+
+        :return: None
+        """
+
+        # remove historic file
+        scrape_file_location = 'app/scrape_output/result.json'
+        if os.path.exists(scrape_file_location):
+            os.remove(scrape_file_location)
+
+        # conduct scrape
+        runner = MyCrawlerRunner(settings=WebsiteSettings().
+                                 generate_settings_dict(file_location=scrape_file_location))
+        deferred = runner.crawl(self.scraper.create(url))
+
+        # run reactor
+        reactor.callLater(30, reactor.stop)
+        reactor.run()

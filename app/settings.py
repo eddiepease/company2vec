@@ -14,8 +14,11 @@ class WebsiteSettings(Settings):
 
         """
         Generating the settings dictionary
-        :param file_location: string to temporary file location
-        :return: settings_dict: dict detailing settings
+
+        :param file_location: temporary file location
+        :type file_location: str
+
+        :return: setting dictionary
         """
 
         settings_dict = {
