@@ -14,7 +14,7 @@ def run_single(company_name):
     :param company_name: company name
     :type company_name: str
 
-    :return: json dictionary of company embedding dictionary
+    :return: company embedding dictionary
     """
 
     # finding URL

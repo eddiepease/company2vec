@@ -65,11 +65,3 @@ app.urls module
    :undoc-members:
    :show-inheritance:
 
-
-Module contents
------------------
-
-.. automodule:: app
-   :members:
-   :undoc-members:
-   :show-inheritance:

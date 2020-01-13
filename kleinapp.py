@@ -29,7 +29,7 @@ def create_embedding(request, company_name):
     :param company_name: company name
     :type company_name: str
 
-    :return: json dictionary of company embedding
+    :return: company embedding dictionary
     """
 
     url = URLFinder().run(company=company_name)
