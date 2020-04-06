@@ -61,11 +61,11 @@ jobs:
                   path: test-reports
                   destination: test-reports
 
-            # building docker image
-            - setup_remote_docker:
-            - run:
-                  name: build docker image
-                  command: |
-                      docker build -t company2vec:latest --pull --no-cache .
+#            # building docker image
+#            - setup_remote_docker:
+#            - run:
+#                  name: build docker image
+#                  command: |
+#                      docker build -t company2vec:latest --pull --no-cache .
 
 
