@@ -9,8 +9,7 @@ This repo is designed to aid this process by being easy to understand and genera
 
 ## Getting started
 
-To get the API up and running, follow the steps below:
-
+To try out the package, follow the steps below:
 
 * Clone this repository to local machine
 * cd in folder root
