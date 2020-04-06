@@ -30,7 +30,7 @@ web app using `kleinapp.py` and `Dockerfile` and deploy this docker image to the
 
 ## Documentation
 
-Documentation is a work in progress and will be added in due course.
+Documentation can be found [here](https://eddiepease.github.io/company2vec/).
 
 
 ## Contributing
