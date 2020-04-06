@@ -1,5 +1,7 @@
 # Company2Vec API
 
+[![CircleCI](https://circleci.com/gh/eddiepease/company2vec.svg?style=shield)](https://circleci.com/gh/eddiepease/company2vec)
+
 This repository generates a company vector embedding given a company name. Many machine 
 learning use cases in business require a numerical representation of company. 
 This repo is designed to aid this process by being easy to understand and generalizable to different companies/industries. 
