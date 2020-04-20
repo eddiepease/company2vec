@@ -1,4 +1,4 @@
-# Company2Vec API
+# Company2Vec
 
 [![CircleCI](https://circleci.com/gh/eddiepease/company2vec.svg?style=shield)](https://circleci.com/gh/eddiepease/company2vec)
 
