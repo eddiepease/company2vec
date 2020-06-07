@@ -16,7 +16,8 @@ To try out the package, follow the steps below:
 * `chmod +x setup.sh` to make bash file executable
 * `./setup.sh` to run executable - this installs a virtualenv and downloads relevant data
 * Setup a Bing API on Azure and replace the subscription key in `config.py` (there is a free version)
-* Change the company name in the 'main' function of `quick_start.py`, then run
+* From the command line / terminal, type in:>> python quick_start.py --company_name "<company_name_of_your_choice>" to get the embedding. 
+* For short hand notation type in:>> python quick_start.py -c "<company_name_of_your_choice>" 
 
 ## Features
 

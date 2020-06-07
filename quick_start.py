@@ -1,6 +1,7 @@
 """This module provides a quick way to start using company2vec"""
 
 import json
+import argparse
 
 from app.urls import URLFinder
 from app.pipelines import Pipeline, return_company_embedding
@@ -37,7 +38,12 @@ def run_single(company_name):
 
 if __name__ == '__main__':
 
-    company = 'bbc'
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-c", "--company_name", required=True, help="pass on the company name of your choice")
+    args = vars(ap.parse_args())
+
+    company = args["company_name"]
+    print("Company passed: ", company)
     embedding = run_single(company)
     print(embedding)
 
